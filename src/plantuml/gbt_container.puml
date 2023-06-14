@@ -1,0 +1,75 @@
+@startuml
+!include ../c4/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+System_Ext(ge, "Gradle Enterprise", "The tool of choice for the world’s most valuable global business and technology brands that compete on the delivery speed and quality of their code.")
+
+System_Ext(ide, IDEs, "IntelliJ IDEA, Android Studio, VSCode etc...")
+
+System_Boundary(gbt, "Gradle Build Tool") {
+
+    Container_Boundary(cross, Cross Cutting) {
+        Container(doc, Documentation,,"TODO")
+        Container(release, Release coordination,,"TODO")
+        Container(build_infra, Build infrastructure,,"TODO")
+    }
+
+    Container(ge_integration, GE integration,,"TODO")
+    Container(ide_integration, IDE integration,,"TODO")
+
+    Container_Boundary(ext, Extensibility) {
+        Container(extensibility, Extensibility,,"TODO")
+        System_Ext(portal, Gradle Plugin Portal)
+    }
+
+    Container(utils, Utilities,,"Libraries with shared ownership.")
+
+    Container(software_jvm, JVM Software,, "Building on the core and software platforms, this is a platform for developing software that runs on the JVM, whether that software is implemented using Java, Kotlin or some other JVM language.")
+
+    Container(software, Software,, "Building on the core automation platform, this is a general purpose platform for automating software development. This includes work such as compiling, testing and documenting software, plus sharing that software via publishing and dependency management. This platform is agnostic to what kind of software is being developed. It might be Java or Kotlin libraries running on the JVM, Gradle plugins, Android or iOS applications, C++ libraries, and so on.")
+
+    Container_Boundary(core, Core Automation) {
+        Container(core_config, Core Configuration,,"TODO")
+        Container(core_exec, Core Execution,,"TODO")
+        Container(core_runtime, Core Runtime,,"????")
+        Container(core_ux, Core UX,,"????")
+    }
+}
+
+Container_Ext(kotlin, Kotlin,, "This platform allows software to be implemented in Kotlin and run in JVM, Javascript and native environments.")
+Container_Ext(android, Android,, "This platform allows software to be developed for the Android ecosystem using various implementation languages.")
+Container_Ext(nokee, Nokee,, "The Nokee project aims to allow software to be developed for several native environments, such as iOS or desktop machines, using various implementation languages, such as C++ or Swift.")
+Container_Ext(custom, Custom,, "Teams and the community should be able to build their own platforms, that build on top of other platforms.")
+
+Rel(software,core,)
+Rel(software_jvm, software,)
+Rel(software_jvm, core,)
+
+Rel(core,ge_integration,)
+Rel(software,ge_integration,)
+Rel(software_jvm,ge_integration,)
+Rel(ge,ge_integration,)
+
+Rel(ide,ide_integration,)
+Rel(ide_integration,core,)
+Rel(ide_integration,software,)
+Rel(ide_integration,software_jvm,)
+
+Rel(extensibility,core,)
+Rel(extensibility,software,)
+Rel(extensibility,software_jvm,)
+
+Rel(core,utils,)
+Rel(software,utils,)
+Rel(software_jvm,utils,)
+
+Rel(kotlin,software_jvm,)
+Rel(android,kotlin,)
+Rel(android,software_jvm,)
+Rel(nokee,software,)
+Rel(custom,software_jvm,)
+Rel(custom,software,)
+Rel(custom,core,)
+
+@enduml

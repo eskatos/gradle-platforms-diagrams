@@ -1,0 +1,60 @@
+@startuml
+!include ../c4/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person_Ext(software_dev, "Software developer", "Android developer, Java backend developer, etc...")
+Person_Ext(build_eng, "Build engineer", "Member of the central build team of their organization, or simply someone responsible for the build in a software development team.")
+Person_Ext(plugin_author, "Community plugin author", "Individual who maintains an integration with a specific tool with Gradle and publishes it to the Plugin Portal.")
+Person_Ext(platform_provider, "Platform provider", "Team responsible for a plugin or a suite of plugins for an entire ecosystem like Android or Kotlin.")
+
+Enterprise_Boundary(g, "Gradle, the Company") {
+
+    Person(gbt_eng, "Gradle Build Tool\nengineers", "Software developers working on the Gradle Build Tool")
+    Person(gbt_release_eng, "Gradle Build Tool\nrelease team", "Team members responsible for releasing new versions of the Gradle Build Tool.")
+    Person(gbt_portal_eng, "Gradle Plugin Portal\nteam", "Team members responsible for maintaining the portal and for approving or rejecting plugin submissions.")
+
+    System(gbt, "Gradle Build Tool", "Gradle Build Tool is the fast and dependable open source build system that automates building software of any type, size or complexity.")
+    System(portal, "Gradle Plugin Portal", "A repository hosting community Gradle plugins.")
+    System(profiler, "Gradle Profiler", "A tool for gathering profiling and benchmarking information for Gradle builds.")
+    System_Ext(ge, "Gradle Enterprise", "The tool of choice for the world’s most valuable global business and technology brands that compete on the delivery speed and quality of their code.")
+}
+
+System_Ext(ide, IDEs, "IntelliJ IDEA, Android Studio, VSCode etc...")
+System_Ext(ci, "Continuous integration systems", "TeamCity, GitHub, Jenkins, Bamboo etc...")
+System_Ext(repos, "External repositories", "Maven Central, Google etc...")
+
+Rel(gbt_eng, gbt, Develop, ???)
+Rel(gbt_release_eng, gbt, Releases, ???)
+Rel(gbt_release_eng, profiler, Releases, ???)
+Rel(gbt_portal_eng, portal, Deploy new portal versions, CI)
+Rel(gbt_portal_eng, portal, Approve or rejects plugins, WEB)
+
+Rel(software_dev, ide, Uses, GUI)
+Rel(software_dev, gbt, Uses, CLI)
+Rel(software_dev, portal, Browses, WEB)
+Rel(software_dev, ge, Browses, WEB)
+
+Rel(build_eng, ide, Uses, GUI)
+Rel(build_eng, gbt, Uses, CLI)
+Rel(build_eng, portal, Browses, WEB)
+Rel(build_eng, ge, Browses, WEB)
+Rel(build_eng, profiler, Uses, CLI)
+
+Rel(plugin_author, gbt, Extends, "Java, Kotlin, Groovy")
+Rel(plugin_author, portal, Publishes plugins, ???)
+Rel(plugin_author, repos, Publishes plugins, ???)
+
+Rel(platform_provider, gbt, Extends, "Java, Kotlin, Groovy")
+Rel(platform_provider, portal, Publishes plugins, ???)
+Rel(platform_provider, repos, Publishes plugins, ???)
+
+Rel(ide,gbt, Runs, TAPI)
+Rel(gbt,ge, "Build Scans\nBuild Cache", HTTP)
+Rel(gbt,portal,Plugins, HTTP)
+Rel(gbt,repos,Dependencies, HTTP)
+Rel(profiler,gbt, Runs, TAPI/CLI)
+Rel(ci,gbt, Runs, CLI)
+Rel(ci,profiler, Runs, CLI)
+
+@enduml
