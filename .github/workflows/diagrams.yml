@@ -1,0 +1,20 @@
+name: Generate Diagrams
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+jobs:
+  diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/gradle-build-action@v2
+      - run: ./gradlew plantUml
+      - uses: actions/upload-artifact@v3
+        with:
+          name: diagrams
+          path: build/plantuml/
