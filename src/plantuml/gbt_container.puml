@@ -10,8 +10,11 @@ System_Ext(ide, IDEs, "IntelliJ IDEA, Android Studio, VSCode etc...")
 System_Boundary(gbt, "Gradle Build Tool") {
 
     Container_Boundary(cross, Cross Cutting) {
-        Container(doc, Documentation,,"TODO")
-        Container(release, Release coordination,,"TODO")
+
+        Container(doc, Documentation,,"User manual, Javadoc, DSL references and documentation infrastructure")
+
+        Container(release, Release coordination,,"Full distribution, dependencies platform, performance, soak/smoke tests")
+
         Container(build_infra, Build infrastructure,,"TODO")
     }
 
