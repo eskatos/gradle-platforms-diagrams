@@ -1,7 +1,26 @@
 @startuml
 !include ../c4/C4_Container.puml
 
+'skinparam linetype ortho
+skinparam ArrowThickness 3
+skinparam Nodesep 92
+skinparam Ranksep 128
+
 LAYOUT_WITH_LEGEND()
+
+AddRelTag("use", $textColor="gray", $lineColor="lightgray", $legendText="Use")
+AddRelTag("extend", $textColor="purple", $lineColor="purple", $legendText="Extend")
+AddRelTag("push", $textColor="blue", $lineColor="blue", $legendText="Push")
+AddRelTag("pull", $textColor="green", $lineColor="green", $legendText="Pull")
+
+' TODO
+' ?????? e.g. sources -> javadoc for documentation (push/pull)
+' * use build-infra
+' release pull * to build distros
+' release use gradle-promote
+' release push distributions
+' documentation-portal pull distributions
+' documentation-portal push docs.gradle.org
 
 System_Ext(ge, "Gradle Enterprise", "The tool of choice for the world’s most valuable global business and technology brands that compete on the delivery speed and quality of their code.")
 
@@ -45,34 +64,39 @@ Container_Ext(android, Android,, "This platform allows software to be developed 
 Container_Ext(nokee, Nokee,, "The Nokee project aims to allow software to be developed for several native environments, such as iOS or desktop machines, using various implementation languages, such as C++ or Swift.")
 Container_Ext(custom, Custom,, "Teams and the community should be able to build their own platforms, that build on top of other platforms.")
 
-Rel(software,core,)
-Rel(software_jvm, software,)
-Rel(software_jvm, core,)
+Rel(build_infra, software_jvm,, $tags="extend")
+Rel(release, build_infra,, $tags="use")
 
-Rel(core,ge_integration,)
-Rel(software,ge_integration,)
-Rel(software_jvm,ge_integration,)
-Rel(ge,ge_integration,)
+Rel(software,core,, $tags="extend")
+Rel(software_jvm, software,, $tags="extend")
+Rel(software_jvm, core,, $tags="extend")
 
-Rel(ide,ide_integration,)
-Rel(ide_integration,core,)
-Rel(ide_integration,software,)
-Rel(ide_integration,software_jvm,)
+Rel(core,ge_integration,, $tags="push")
+Rel(software,ge_integration,, $tags="push")
+Rel(software_jvm,ge_integration,, $tags="push")
+Rel(ge,ge_integration,, $tags="pull")
 
-Rel(extensibility,core,)
-Rel(extensibility,software,)
-Rel(extensibility,software_jvm,)
+Rel(ide,ide_integration,, $tags="use")
+Rel(ide_integration,core,, $tags="use")
+Rel(ide_integration,software,, $tags="use")
+Rel(ide_integration,software_jvm,, $tags="use")
 
-Rel(core,utils,)
-Rel(software,utils,)
-Rel(software_jvm,utils,)
+Rel(extensibility,core,, $tags="extend")
+Rel(extensibility,software,, $tags="extend")
+Rel(extensibility,software_jvm,, $tags="extend")
 
-Rel(kotlin,software_jvm,)
-Rel(android,kotlin,)
-Rel(android,software_jvm,)
-Rel(nokee,software,)
-Rel(custom,software_jvm,)
-Rel(custom,software,)
-Rel(custom,core,)
+Rel(core,utils,, $tags="use")
+Rel(software,utils,, $tags="use")
+Rel(software_jvm,utils,, $tags="use")
+
+Rel(kotlin,software_jvm,, $tags="extend")
+Rel(android,kotlin,, $tags="extend")
+Rel(android,software_jvm,, $tags="extend")
+Rel(nokee,software,, $tags="extend")
+Rel(custom,software_jvm,, $tags="extend")
+Rel(custom,software,, $tags="extend")
+Rel(custom,core,, $tags="extend")
+
+SHOW_LEGEND()
 
 @enduml
